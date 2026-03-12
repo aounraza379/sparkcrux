@@ -1,56 +1,3 @@
-# SparkCrux Website
-
-A modern, responsive website for SparkCrux digital agency built with HTML, CSS, JavaScript, and a complete Node.js backend.
-
-## Features
-
-- **Dark theme** with electric orange (#FF5C00) accent color
-- **Responsive design** that works on all devices
-- **Smooth animations** and scroll effects
-- **Interactive navbar** with transparent-to-blur scroll effect
-- **Form handling** with validation and database storage
-- **Rate limiting** and security protection
-- **Admin dashboard** for viewing submissions
-- **SEO optimized** with proper meta tags and sitemap
-- **Security headers** and input sanitization
-- **Mobile-friendly** hamburger menu
-
-## Pages
-
-- **Home** (`index.html`) - Hero, services overview, testimonials, CTA
-- **About** (`pages/about.html`) - Company story, values, team
-- **Services** (`pages/services.html`) - Detailed service descriptions
-- **Pricing** (`pages/pricing.html`) - Pricing tiers and FAQ
-- **Portfolio** (`pages/portfolio.html`) - Project showcase
-- **Blog** (`pages/blog.html`) - Blog posts and newsletter
-- **Contact** (`pages/contact.html`) - Contact forms and free audit
-
-## Backend Features
-
-- **Node.js/Express server** with SQLite database
-- **Form submission handling** with validation and sanitization
-- **Rate limiting** (3 submissions per IP per hour)
-- **Security headers** and CSP protection
-- **Admin dashboard** at `/admin` (password protected)
-- **API endpoints** for contact and audit forms
-- **Database storage** with automatic table creation
-
-## Technologies Used
-
-### Frontend
-- **HTML5** semantic markup
-- **CSS3** with CSS variables and Grid/Flexbox
-- **Vanilla JavaScript** (no frameworks)
-- **Google Fonts** (Inter + Space Grotesk)
-
-### Backend
-- **Node.js** with Express.js
-- **SQLite** database (file-based, no setup needed)
-- **Helmet.js** for security headers
-- **Express-rate-limit** for rate limiting
-- **Validator.js** for input validation
-- **dotenv** for environment variables
-
 ## Getting Started
 
 ### Prerequisites
@@ -72,7 +19,7 @@ A modern, responsive website for SparkCrux digital agency built with HTML, CSS, 
 
 4. Open your browser and navigate to:
    - **Website**: http://localhost:3000
-   - **Admin Dashboard**: http://localhost:3000/admin?password=sparkcrux2025
+   - **Admin Dashboard**: http://localhost:3000/admin?password='xxx'
 
 ### Environment Variables
 
