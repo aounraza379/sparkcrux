@@ -6,7 +6,19 @@ const helmet = require('helmet');
 const cors = require('cors');
 const rateLimit = require('express-rate-limit');
 const validator = require('validator');
+const nodemailer = require('nodemailer');
 require('dotenv').config();
+
+// Configure Nodemailer Transporter
+const transporter = nodemailer.createTransport({
+  host: process.env.SMTP_HOST,
+  port: parseInt(process.env.SMTP_PORT) || 587,
+  secure: process.env.SMTP_PORT === '465',
+  auth: {
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS,
+  }
+});
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -181,7 +193,12 @@ function validateAuditRequest(data) {
 // POST /api/contact - Handle contact form submissions
 app.post('/api/contact', async (req, res) => {
   try {
-    const { name, email, website, service, budget, message, source } = req.body;
+    const { name, email, website, service, budget, message, source, honeypot } = req.body;
+    
+    // Spam protection (honeypot)
+    if (honeypot) {
+      return res.json({ success: true, message: 'Contact form submitted successfully' });
+    }
     
     // Validate input
     const errors = validateContactSubmission({ name, email, website, service, budget, message, source });
@@ -214,6 +231,26 @@ app.post('/api/contact', async (req, res) => {
         }
         
         res.json({ success: true, message: 'Contact form submitted successfully' });
+
+        // Send email notification (async, non-blocking)
+        if (process.env.SMTP_HOST && process.env.SMTP_USER) {
+          const mailOptions = {
+            from: process.env.FROM_EMAIL || 'hello@sparkcrux.com',
+            to: process.env.ADMIN_EMAIL || process.env.FROM_EMAIL || 'hello@sparkcrux.com',
+            subject: `New Contact Submission: ${sanitizedData.name}`,
+            text: `Name: ${sanitizedData.name}\nEmail: ${sanitizedData.email}\nService: ${sanitizedData.service}\nBudget: ${sanitizedData.budget || 'N/A'}\nMessage: ${sanitizedData.message}\nWebsite: ${sanitizedData.website || 'N/A'}\nSource: ${sanitizedData.source || 'N/A'}\nIP: ${sanitizedData.ip_address}`
+          };
+          transporter.sendMail(mailOptions).catch(err => console.error('SMTP notification error:', err));
+
+          // Confirmation email to user
+          const confirmMailOptions = {
+            from: process.env.FROM_EMAIL || 'hello@sparkcrux.com',
+            to: sanitizedData.email,
+            subject: 'Thank you for contacting SparkCrux',
+            text: `Hi ${sanitizedData.name},\n\nThank you for reaching out! We have received your message and will get back to you within 24 hours.\n\nBest regards,\nThe SparkCrux Team`
+          };
+          transporter.sendMail(confirmMailOptions).catch(err => console.error('SMTP confirmation error:', err));
+        }
       }
     );
     
@@ -226,7 +263,12 @@ app.post('/api/contact', async (req, res) => {
 // POST /api/audit - Handle audit form submissions
 app.post('/api/audit', async (req, res) => {
   try {
-    const { name, email, website_url, audit_type, goal } = req.body;
+    const { name, email, website_url, audit_type, goal, honeypot } = req.body;
+    
+    // Spam protection (honeypot)
+    if (honeypot) {
+      return res.json({ success: true, message: 'Audit request submitted successfully' });
+    }
     
     // Validate input
     const errors = validateAuditRequest({ name, email, website_url, audit_type, goal });
@@ -257,6 +299,26 @@ app.post('/api/audit', async (req, res) => {
         }
         
         res.json({ success: true, message: 'Audit request submitted successfully' });
+
+        // Send email notification (async, non-blocking)
+        if (process.env.SMTP_HOST && process.env.SMTP_USER) {
+          const mailOptions = {
+            from: process.env.FROM_EMAIL || 'hello@sparkcrux.com',
+            to: process.env.ADMIN_EMAIL || process.env.FROM_EMAIL || 'hello@sparkcrux.com',
+            subject: `New Audit Request: ${sanitizedData.name}`,
+            text: `Name: ${sanitizedData.name}\nEmail: ${sanitizedData.email}\nWebsite URL: ${sanitizedData.website_url}\nAudit Type: ${sanitizedData.audit_type}\nGoal: ${sanitizedData.goal || 'N/A'}\nIP: ${sanitizedData.ip_address}`
+          };
+          transporter.sendMail(mailOptions).catch(err => console.error('SMTP notification error:', err));
+          
+          // Confirmation email to user
+          const confirmMailOptions = {
+            from: process.env.FROM_EMAIL || 'hello@sparkcrux.com',
+            to: sanitizedData.email,
+            subject: 'Your SparkCrux Audit Request',
+            text: `Hi ${sanitizedData.name},\n\nThank you for requesting an audit! We'll review ${sanitizedData.website_url} and get back to you soon.\n\nBest regards,\nThe SparkCrux Team`
+          };
+          transporter.sendMail(confirmMailOptions).catch(err => console.error('SMTP confirmation error:', err));
+        }
       }
     );
     

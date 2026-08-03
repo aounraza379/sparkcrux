@@ -313,7 +313,8 @@ async function handleContactSubmit(e) {
             service: formData.get('service'),
             budget: formData.get('budget'),
             message: formData.get('message'),
-            source: formData.get('source')
+            source: formData.get('source'),
+            honeypot: formData.get('honeypot')
         };
         
         // Send to backend API
@@ -374,7 +375,8 @@ async function handleAuditSubmit(e) {
             name: formData.get('name'),
             email: formData.get('email'),
             website_url: formData.get('website'),
-            audit_type: formData.get('audit-type')
+            audit_type: formData.get('audit-type'),
+            honeypot: formData.get('honeypot')
         };
         
         // Send to backend API

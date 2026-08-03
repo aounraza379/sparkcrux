@@ -104,8 +104,8 @@ Overall verdict: the site looks polished and has a solid marketing foundation, b
 
 ## Step-by-step roadmap
 
-1. Fix the dead links and placeholder actions in index.html and contact.html.
-2. Implement real form delivery: email notifications, confirmation emails, and spam protection.
+1. ✅ Fix the dead links and placeholder actions in index.html and contact.html.
+2. ✅ Implement real form delivery: email notifications, confirmation emails, and spam protection.
 3. Replace the insecure admin flow in server.js with proper authentication.
 4. Add legal pages and a cookie/consent layer.
 5. Replace placeholder portfolio/testimonial content with real proof points.
@@ -148,13 +148,13 @@ The main reason is trust. Investors, clients, and leads will judge you quickly b
 
 ## Final pre-deployment checklist
 
-- [ ] Real email delivery for contact and audit forms
+- [x] Real email delivery for contact and audit forms
 - [ ] Secure admin authentication
 - [ ] Privacy policy, terms, and cookie consent
-- [ ] CAPTCHA or honeypot for forms
+- [x] CAPTCHA or honeypot for forms
 - [ ] Production database with backups
 - [ ] Analytics and conversion tracking
-- [ ] Working CTA links and no placeholder actions
+- [x] Working CTA links and no placeholder actions
 - [ ] Real case studies, testimonials, and brand assets
 - [ ] Accessibility review and mobile responsiveness pass
 - [ ] Basic tests and deployment automation
